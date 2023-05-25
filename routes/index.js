@@ -1,12 +1,11 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const anuncio = require('../models/anuncios');
-const apiAnuncio = require('../routes/api/anuncios');
+const anuncio = require("../models/anuncios");
+const apiAnuncio = require("../routes/api/anuncios");
 
 /* GET home page. */
-router.get('/', async function(req, res, next) {
-  
-/*
+router.get("/", async function (req, res, next) {
+  /*
 Query propuesta de selección para probar index:
 
 http://localhost:3001/?pminimo=190&pmaximo=2000&tag=lifestyle&venta=true&sort=-precio&limit=15
@@ -14,7 +13,7 @@ http://localhost:3001/?pminimo=190&pmaximo=2000&tag=lifestyle&venta=true&sort=-p
 */
 
   try {
-    res.locals.title="Práctica Back-end";
+    res.locals.title = "Práctica Back-end";
     // filtros
     const filterByName = req.query.nombre;
     const filterByStatus = req.query.venta;
@@ -29,7 +28,6 @@ http://localhost:3001/?pminimo=190&pmaximo=2000&tag=lifestyle&venta=true&sort=-p
     const sort = req.query.sort;
     // selección de campos
     const select = req.query.select;
-    console.log("SELECT ES "+select)
     const filtro = {};
 
     //Dejo el código de mi intento de crear un objeto de objetos
@@ -38,7 +36,7 @@ http://localhost:3001/?pminimo=190&pmaximo=2000&tag=lifestyle&venta=true&sort=-p
     //y al crear los objetos sus propiedades me las mete automáticamente
     //con comillas no se por qué... La query funciona en consola
     // Query intentada: b.anuncios.find({nombre: {"$regex": /^fer/, $options: 'i'}})
-    if(filterByName){
+    if (filterByName) {
       //filterByName+="/";
       //let regEx="/^";
       //regEx+=filterByName;
@@ -48,16 +46,15 @@ http://localhost:3001/?pminimo=190&pmaximo=2000&tag=lifestyle&venta=true&sort=-p
       //Object.assign(nameSearch,optionRegEx);
       //const prueba = { "$regex": /^F/};
       //Object.assign(filtro.nombre,nameSearch);
-      filtro.nombre = new RegExp('^'+filterByName, "i");
-      console.log("FILTRO DE NOMBRE ES: "+filtro.nombre);
+      filtro.nombre = new RegExp("^" + filterByName, "i");
     }
 
-    if(filterByStatus){
-      filtro.venta=filterByStatus;
+    if (filterByStatus) {
+      filtro.venta = filterByStatus;
     }
-    
-    if(filterByTag){
-      filtro.tag=filterByTag;
+
+    if (filterByTag) {
+      filtro.tag = filterByTag;
     }
 
     /*Si detecta que se ha pasado un precio mínimo
@@ -67,36 +64,34 @@ http://localhost:3001/?pminimo=190&pmaximo=2000&tag=lifestyle&venta=true&sort=-p
     objecto de precio máximo dentro y hay que hacer merge con Object.assign.
     En caso contrario, simplemente asigna el objeto a filtro.precio, inicializándolo.
     */
-    if(filterByMinPrice){
-      const min = { "$gte": filterByMinPrice };
-      if(filtro.precio){
-        Object.assign(filtro.precio,min);
-      }else{
-        filtro.precio=min;
+    if (filterByMinPrice) {
+      const min = { $gte: filterByMinPrice };
+      if (filtro.precio) {
+        Object.assign(filtro.precio, min);
+      } else {
+        filtro.precio = min;
       }
-      
     }
-    
+
     /*Equivalente a precio mínimo*/
-    if(filterByMaxPrice){
-      const max = { "$lte": filterByMaxPrice };
-      if(filtro.precio){
-        Object.assign(filtro.precio,max);
-      }else{
-        filtro.precio=max;
+    if (filterByMaxPrice) {
+      const max = { $lte: filterByMaxPrice };
+      if (filtro.precio) {
+        Object.assign(filtro.precio, max);
+      } else {
+        filtro.precio = max;
       }
     }
 
-   if(filterPrecio){
-    precio = {"precio": filterPrecio};
-    console.log(precio);
-   }
-  
-    res.locals.anuncio = await anuncio.lista(filtro, skip, limit, sort, select);
-    res.render('index');
-    //res.json(res.locals.anuncio);
+    if (filterPrecio) {
+      precio = { precio: filterPrecio };
+      console.log(precio);
+    }
 
-  }catch (error) {
+    res.locals.anuncio = await anuncio.lista(filtro, skip, limit, sort, select);
+    res.render("index");
+    //res.json(res.locals.anuncio);
+  } catch (error) {
     next(error);
   }
 });

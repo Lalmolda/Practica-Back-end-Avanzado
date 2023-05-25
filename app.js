@@ -3,9 +3,13 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const jwtAuthMiddleware = require("./lib/jwtAuthMiddleware");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+const LoginController = require("./controllers/loginController");
 
 var app = express();
 
@@ -21,13 +25,40 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+const loginController = new LoginController();
+
 /**
  * Rutas del API  */
 
-app.use("/api", require("./routes/api/anuncios"));
+app.use("/api", jwtAuthMiddleware, require("./routes/api/anuncios"));
+app.post("/api/authenticate", loginController.logIn);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+
+/** 
+app.use(
+  session({
+    name: "nodepop-session",
+    secret: "fdsñl4093j590430fdsfmdsf",
+    saveUninitialized: true,
+    resave: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 2, // expira a las 2 horas de inactividad
+    },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_CONNECTION_STR,
+    }),
+  })
+);
+
+*/
+
+/**
+ * Rutas del website  */
+//ROUTE TO LOGIN IN THE WEBSITE WITHOUT THE API
+app.get("/login", loginController.index);
+app.post("/login", loginController.logIn);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
