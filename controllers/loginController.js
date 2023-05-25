@@ -24,14 +24,12 @@ class LoginController {
         return;
       }
 
-      console.log("LOGIN CORRECTO");
-
       // creaamos un token JWT con el _id del usuario dentro si el usuario existe y el pass coincide
       const token = await jwt.sign(
         { _id: usuario._id },
         process.env.JWT_SECRET,
         {
-          expiresIn: "2h",
+          expiresIn: "1h",
         }
       );
       //respondemos con un json del jwt token
