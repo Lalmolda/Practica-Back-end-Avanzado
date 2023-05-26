@@ -21,7 +21,7 @@ router.get("/tags", async (req, res, next) => {
   }
 });
 
-router.get("/anuncios", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     // filtros
     const filterByName = req.query.nombre;

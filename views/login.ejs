@@ -1,37 +1,31 @@
-<section class="bg-light">
-  <div class="container px-5">
-    <div
-      class="row gx-5 align-items-center justify-content-center justify-content-lg-between"
-    >
+<section>
+  <div>
+    <div>
       <form method="POST">
-        <div class="row mb-3">
-          <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
-          <div class="col-sm-10">
+        <div>
+          <label for="inputEmail">Email</label>
+          <div>
             <input
               type="email"
               name="email"
               value="<%=email %>"
-              class="form-control"
-              id="inputEmail3"
+              id="inputEmail"
             />
           </div>
         </div>
-        <div class="row mb-3">
-          <label for="inputPassword3" class="col-sm-2 col-form-label"
-            >Password</label
-          >
-          <div class="col-sm-10">
+        <div>
+          <label for="inputPassword">Password</label>
+          <div>
             <input
               type="password"
               name="password"
               class="form-control"
-              id="inputPassword3"
+              id="inputPassword"
             />
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Sign in</button>
-        <button type="submit" class="btn btn-primary">Logout</button>
-        <p>Error</p>
+        <button type="submit">Sign in</button>
+        <p><%= error %></p>
       </form>
     </div>
   </div>

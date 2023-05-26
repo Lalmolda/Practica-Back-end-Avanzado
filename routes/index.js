@@ -13,7 +13,7 @@ http://localhost:3001/?pminimo=190&pmaximo=2000&tag=lifestyle&venta=true&sort=-p
 */
 
   try {
-    res.locals.title = "Práctica Back-end";
+    res.locals.title = "Back-end Nodepop";
     // filtros
     const filterByName = req.query.nombre;
     const filterByStatus = req.query.venta;
@@ -84,10 +84,10 @@ http://localhost:3001/?pminimo=190&pmaximo=2000&tag=lifestyle&venta=true&sort=-p
     }
 
     if (filterPrecio) {
-      precio = { precio: filterPrecio };
-      console.log(precio);
+      //precio = { precio: filterPrecio };
+      filtro.precio = filterPrecio;
     }
-
+    console.log(filtro.precio);
     res.locals.anuncio = await anuncio.lista(filtro, skip, limit, sort, select);
     res.render("index");
     //res.json(res.locals.anuncio);

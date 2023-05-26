@@ -5,15 +5,17 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
+    <a href="/change-locale/en">English</a>
+    <a href="/change-locale/es">Español</a>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <p><%= __('Welcome to') %> <%= title %></p>
     <br />
     <div class="listadoContainer">
       <% anuncio.forEach(anuncio => { %>
       <div class="imageContainer">
-        <p>Nombre Anuncio: <%= anuncio.nombre %></p>
-        <p>Venta: <%= anuncio.venta %></p>
-        <p>Precio: <%= anuncio.precio %></p>
+        <p><%= __('Ad name') %> : <%= anuncio.nombre %></p>
+        <p><%= __('On sale') %> : <%= anuncio.venta %></p>
+        <p><%= __('Price') %> : <%= anuncio.precio %></p>
         <p>Tag: <%= anuncio.tag %></p>
         <img src="<%= anuncio.foto %>" class="picture" />
         <br />

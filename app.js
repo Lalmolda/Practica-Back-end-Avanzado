@@ -3,9 +3,10 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
+//const session = require("express-session");
+//const MongoStore = require("connect-mongo");
 const jwtAuthMiddleware = require("./lib/jwtAuthMiddleware");
+const i18n = require("./lib/i18nConfigure");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -29,12 +30,11 @@ const loginController = new LoginController();
 
 /**
  * Rutas del API  */
-
-app.use("/api", jwtAuthMiddleware, require("./routes/api/anuncios"));
+app.get("/api/authenticate", loginController.logIn);
 app.post("/api/authenticate", loginController.logIn);
+app.use("/api/anuncios", jwtAuthMiddleware, require("./routes/api/anuncios"));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+//app.use("/users", usersRouter);
 
 /** 
 app.use(
@@ -57,6 +57,10 @@ app.use(
 /**
  * Rutas del website  */
 //ROUTE TO LOGIN IN THE WEBSITE WITHOUT THE API
+
+app.use(i18n.init);
+app.use("/change-locale", require("./routes/change-locale"));
+app.use("/", indexRouter);
 app.get("/login", loginController.index);
 app.post("/login", loginController.logIn);
 

@@ -17,10 +17,10 @@ class LoginController {
 
       // Comparamos el password usando el metodo comparepwassword, que devuelve promesa.
       if (!usuario || !(await usuario.comparePassword(password))) {
-        res.json({ error: "Wrong username or password" });
-        console.log(
-          "ENTRO Y PASS ES " + password + " y email es: " + req.body.email
-        );
+        res.locals.error = "Error: Wrong username or password";
+        res.locals.email = email;
+        //Añadimos status code 401 al estado
+        res.status(401).render("login");
         return;
       }
 
@@ -32,7 +32,7 @@ class LoginController {
           expiresIn: "1h",
         }
       );
-      //respondemos con un json del jwt token
+      //respondemos con un json del jwt token, ya que el login no esta programado en front-end para impedir acceso a nada.
       res.json({ jwt: token });
     } catch (err) {
       next(err);

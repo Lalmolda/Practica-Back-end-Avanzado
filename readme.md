@@ -1,21 +1,23 @@
 # NodePop
 
-Install dependencies 
+Install dependencies
 
 ```sh
 npm install
 ```
 
-Start in development mode 
+Start in development mode
+
 ```sh
-npm run dev 
+npm run dev
 ```
 
 Create database script
 
 ```sh
-npm run initDB 
+npm run initDB
 ```
+
 # Información general
 
 Este servidor usa el puerto 3001.
@@ -26,7 +28,13 @@ http://localhost:3001/api
 
 La API devuelve JSON
 
-/api/tags --> Saca todos los distintos tags de los anuncios
+/api/authenticate --> Permite hacer login desde la API. RECUERDE usar x-www-form-urlencoded y enviar las key email y password con sus respectivos valores. En este caso, el usuario es user@example.com y la contraseña 1234
+
+/login --> Si lo desea, puede hacer login y obtener el JWToken desde el frontend en esta ruta.
+
+/api/anuncios/tags --> Saca todos los distintos tags de los anuncios. RECUERDE que esta ruta está protegida, y debe proveer en el header el JWToken que le ha devuelto /api/authenticate
+
+/api/anuncios --> Saca todos los anuncios sin filtros. RECUERDE que esta ruta está protegida, y debe proveer en el header el JWToken que le ha devuelto /api/authenticate
 
 Para acceder al index que devuelve una lista de anuncios: http://localhost:3001/
 
